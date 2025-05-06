@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EfficientNet B4 Prediction</title>
+  </head>
+  <body>
+    <h2>Upload Image for Prediction</h2>
+    <input type="file" id="imgInput" />
+    <button onclick="uploadImage()">Predict</button>
+    <p id="result"></p>
+
+    <script>
+      async function uploadImage() {
+        const input = document.getElementById("imgInput");
+        if (input.files.length === 0) return;
+
+        const formData = new FormData();
+        formData.append("file", input.files[0]);
+
+        const response = await fetch("http://localhost:8000/predict/", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+        document.getElementById("result").innerText =
+          "Prediction: " + data.prediction;
+      }
+    </script>
+  </body>
+</html>
